@@ -3,21 +3,16 @@ const express = require("express");
 const app = express();
 
 
-app.get("/profile", (req, res) => {
+app.get("/user", (req, res) => {
+    console.log(req.query);
     res.send("Get request");
 });
 
-app.post("/profile" ,(req, res) => {
-    res.send("Profile Posted Successfully!");
+app.get("/user/:userId/:name/:password", (req, res) => {
+    console.log(req.params);
+    res.send("Get request");
 });
 
-app.put("/profile",(req, res) => {
-    res.send("Profile Updated Successfully!");
-});
-
-app.delete("/profile", (req, res) => {
-    res.send("Profile Deleted Successfully!");
-});
 
 app.listen(3000,()=>{
     console.log("Server running at 3000");
