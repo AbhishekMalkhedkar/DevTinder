@@ -12,7 +12,8 @@ app.post("/signup", async (req, res) => {
         await user.save();
         res.send("User Added!!");    
     } catch (error) {
-        res.status(400).send("Something went wrong");
+        res.status(400).send("Something went wrong (" + error.message + ")");
+        console.log(error.message);
     }
 
     
@@ -59,7 +60,7 @@ app.patch("/user/:userId", async (req, res) => {
             throw new Error("Update not allowed"); 
         }
 
-        if(data?.skills.length > 10){
+        if(data.skills?.length > 10){
             throw new Error("Skills cannot be more than 10!");
         }
     
@@ -68,12 +69,12 @@ app.patch("/user/:userId", async (req, res) => {
         runValidators : true
     });
 
-
+        console.log(user);
             
         res.send("User updated successfully");
     } catch (error) {
-        res.status(400).send("Something went wrong");
-        console.log(error.message);
+        res.status(400).send("Something went wrong = > " + error.message);
+        console.log(error);
 
     }
 

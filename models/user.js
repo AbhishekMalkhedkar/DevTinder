@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const validator = require("validator");
 
 const userSchema = new mongoose.Schema({
     firstName: {
@@ -13,11 +14,21 @@ const userSchema = new mongoose.Schema({
         required : true,
         unique : true,
         lowercase : true,
-        trim : true
+        trim : true,
+        validate(value){
+            if(!validator.isEmail(value)){
+                throw new Error("Invalid email address: " + value);
+            }
+        }
     },
     password : {
         type : String,
-        required : true
+        required : true,
+        validate(value){
+            if(!validator.isStrongPassword(value)){
+                throw new Error("Enter a strong password : " + value);
+            }
+        }
     },
     age : {
         type : Number,
@@ -34,6 +45,11 @@ const userSchema = new mongoose.Schema({
     photoUrl : {
         type : String,
         default : "https://www.google.co.in/url?sa=i&url=https%3A%2F%2Fclipart-library.com%2Fclip-art%2F280-2806732_png-file-svg-default-profile-picture-png.htm&psig=AOvVaw27Mvc3KAWbNA-LDEoBYLp3&ust=1733329756379000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCMjavdqCjIoDFQAAAAAdAAAAABAQ",
+        validate(value){
+            if(!validator.isURL(value)){
+                throw new Error("Invalid Photo Url address: " + value);
+            }
+        }
     },
     about : {
         type : String,
