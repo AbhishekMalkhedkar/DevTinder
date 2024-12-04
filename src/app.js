@@ -4,21 +4,79 @@ const User = require("../models/user");
 
 const app = express();
 
+app.use(express.json());
+
 app.post("/signup", async (req, res) => {
+    const user = new User (req.body);
+    try {
+        await user.save();
+        res.send("User Added!!");    
+    } catch (error) {
+        res.status(400).send("Something went wrong");
+    }
 
-
-    const user = new User ({
-        firstName : "Akshay",
-        lastName : "Shetty",
-        emailId : "akshay@gmail.com",
-        password : "akshay@123",
-        age : "21",
-        gender : "male"
-    });
     
-    await user.save();
-    res.send("User Added!!");
 });
+
+
+
+app.get("/user", async (req, res) => {
+    try {
+        const user = new User.findById(req.body.id);
+    if(!user){
+        res.status(404).send("User not found");
+    }else{
+        res.send(user);
+    }
+    } catch (error) {
+        res.status(400).send("Something went wrong");
+        // console.error(err);
+    }
+});
+
+app.get("/users", async (req, res) => {
+    try {
+        const users = await User.find({});
+        if(users.length===0){
+            res.status(404).send("User not found");
+        }else{
+            res.send(users);
+        }
+    } catch (error) {
+        res.status(400).send("Something went wrong");
+        console.error(error);
+    }
+});
+
+app.patch("/user", async (req, res) => {
+    const userId = req.body.id;
+    const data = req.body;
+    try {
+        await User.findByIdAndUpdate(userId, data, {
+            returnDocument : "after",
+            runValidators : true
+        });
+        res.send("User updated successfully");
+    } catch (error) {
+        res.status(400).send("Something went wrong");
+
+    }
+
+});
+
+app.delete("/user", async (req, res) => {
+    const userId = req.body.id;
+    try {
+        await User.findByIdAndDelete(userId);
+        res.send("User deleted successfully");
+    } catch (error) {
+        res.status(400).send("Something went wrong");
+    }
+});
+
+
+
+
 
 connectDb().then(()=> {
     console.log("Database connected...");
