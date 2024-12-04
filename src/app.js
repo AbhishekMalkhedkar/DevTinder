@@ -48,17 +48,32 @@ app.get("/users", async (req, res) => {
     }
 });
 
-app.patch("/user", async (req, res) => {
-    const userId = req.body.id;
+app.patch("/user/:userId", async (req, res) => {
+    const userId = req.params?.userId;
     const data = req.body;
     try {
-        await User.findByIdAndUpdate(userId, data, {
-            returnDocument : "after",
-            runValidators : true
-        });
+        const ALLOWED_UPDATES = ["userId","photoUrl","about","gender", "age", "skills"];
+
+        const isUpdateAllowed = Object.keys(data).every((k) => ALLOWED_UPDATES.includes(k));
+        if(!isUpdateAllowed){
+            throw new Error("Update not allowed"); 
+        }
+
+        if(data?.skills.length > 10){
+            throw new Error("Skills cannot be more than 10!");
+        }
+    
+        const user = await User.findByIdAndUpdate(userId, data, {
+        returnDocument : "after",
+        runValidators : true
+    });
+
+
+            
         res.send("User updated successfully");
     } catch (error) {
         res.status(400).send("Something went wrong");
+        console.log(error.message);
 
     }
 
