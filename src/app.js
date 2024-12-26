@@ -30,6 +30,6 @@ connectDb().then(()=> {
         console.log("Server running at 3000");
     });
 }).catch(err => {
-    console.error("Database cannot be connceted!!");
+    console.error("Database cannot be connceted!! : " + err);
 });
 

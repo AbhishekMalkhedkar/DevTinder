@@ -15,6 +15,29 @@ const validateSignUpData = (req) => {
     }
 };
 
+const validateEditProfileDaata = (req) => {
 
 
-module.exports = { validateSignUpData  };
+    const { photoUrl, about, skills } = req.body;
+
+    
+
+    if(!validator.isURL(photoUrl)){
+        throw new Error("Invalid PhotoUrl!");
+    }else if(about.length > 200){
+        throw new Error("Reached Maximum limit of about");
+    }
+    else if(skills.length > 10){
+        throw new Error("Reached Maximum length of skills");
+    }
+
+    const allowedEditFields = ["firstName", "lastName", "emailId", "photoUrl", "gender", "age", "about", "skills"];
+
+    const isEditAllowed = Object.keys(req.body).every((field) => allowedEditFields.includes(field));
+
+    return isEditAllowed;
+};
+
+
+
+module.exports = { validateSignUpData, validateEditProfileDaata  };
