@@ -37,7 +37,6 @@ const userSchema = new mongoose.Schema({
     },
     age : {
         type : Number,
-        required : true
     },
     gender : {
         type : String,
@@ -49,7 +48,7 @@ const userSchema = new mongoose.Schema({
     },
     photoUrl : {
         type : String,
-        default : "https://www.google.co.in/url?sa=i&url=https%3A%2F%2Fclipart-library.com%2Fclip-art%2F280-2806732_png-file-svg-default-profile-picture-png.htm&psig=AOvVaw27Mvc3KAWbNA-LDEoBYLp3&ust=1733329756379000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCMjavdqCjIoDFQAAAAAdAAAAABAQ",
+        default : "https://static.vecteezy.com/system/resources/thumbnails/020/765/399/small_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg",
         validate(value){
             if(!validator.isURL(value)){
                 throw new Error("Invalid Photo Url address: " + value);

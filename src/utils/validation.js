@@ -15,28 +15,59 @@ const validateSignUpData = (req) => {
     }
 };
 
-const validateEditProfileDaata = (req) => {
+// const validateEditProfileDaata = (req) => {
 
 
-    const { photoUrl, about, skills } = req.body;
+//     const { photoUrl, about, skills } = req.body;
 
     
 
-    if(!validator.isURL(photoUrl)){
+//     if(!validator.isURL(photoUrl)){
+//         throw new Error("Invalid PhotoUrl!");
+//     }else if(about.length > 200){
+//         throw new Error("Reached Maximum limit of about");
+//     }
+//     else if(skills.length > 10){
+//         throw new Error("Reached Maximum length of skills");
+//     }
+
+//     const allowedEditFields = ["firstName", "lastName", "emailId", "photoUrl", "gender", "age", "about", "skills"];
+
+//     const isEditAllowed = Object.keys(req.body).every((field) => allowedEditFields.includes(field));
+
+//     return isEditAllowed;
+// };
+
+
+const validateEditProfileDaata = (req) => {
+    const { photoUrl, about, skills, firstName, lastName, gender, age } = req.body;
+
+    // Check if photoUrl is provided and is valid
+    if (photoUrl && !validator.isURL(photoUrl)) {
         throw new Error("Invalid PhotoUrl!");
-    }else if(about.length > 200){
+    }
+
+    // Check if about is provided and doesn't exceed length limit
+    if (about && about.length > 200) {
         throw new Error("Reached Maximum limit of about");
     }
-    else if(skills.length > 10){
+
+    // Check if skills is provided and doesn't exceed length limit
+    if (skills && skills.length > 10) {
         throw new Error("Reached Maximum length of skills");
     }
 
+    // Ensure that only allowed fields are being updated
     const allowedEditFields = ["firstName", "lastName", "emailId", "photoUrl", "gender", "age", "about", "skills"];
-
     const isEditAllowed = Object.keys(req.body).every((field) => allowedEditFields.includes(field));
 
-    return isEditAllowed;
+    if (!isEditAllowed) {
+        throw new Error("Invalid fields in request!");
+    }
+
+    return true;  // If all checks pass
 };
+
 
 
 
