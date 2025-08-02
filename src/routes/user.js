@@ -27,7 +27,7 @@ userRouter.get("/user/requestes/received", userAuth,  async (req, res) => {
         
 
     }catch(err){
-        // console.log(err);
+        
         res.status(400).send("Error: " + err.message);
     }
 
@@ -58,7 +58,7 @@ userRouter.get("/user/connections", userAuth, async (req, res) => {
         res.json({ data });
 
     }catch(err){
-        // console.log(err);
+        
         res.status(400).send("Error: " + err.message);
     }
 
@@ -86,7 +86,7 @@ userRouter.get("/feed", userAuth, async (req, res) => {
             hideUsersFromFeed.add(req.toUserId).toString();
         });
         
-        // console.log(hideUsersFromFeed);
+        
 
         const users = await User.find({
             $and: [
@@ -98,7 +98,7 @@ userRouter.get("/feed", userAuth, async (req, res) => {
         res.json(users);
 
     }catch(err){
-        // console.log(err);
+        
         res.status(400).send("Error: " + err.message);
     }
 });
