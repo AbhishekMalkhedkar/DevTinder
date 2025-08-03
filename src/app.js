@@ -2,6 +2,8 @@ const express = require("express");
 const connectDb = require("./config/database");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const http = require("http");
+
 require('dotenv').config();
 
 
@@ -24,6 +26,7 @@ const authRouter = require("./routes/auth");
 const profileRouter = require("./routes/profile");
 const requestRouter = require("./routes/request");
 const userRouter = require("./routes/user");
+const initializeSocket = require("./utils/socket");
 
 
 
@@ -32,11 +35,15 @@ app.use("/", profileRouter);
 app.use("/", requestRouter);
 app.use("/", userRouter);
 
+const server = http.createServer(app);
+
+initializeSocket(server);
+
 
 
 connectDb().then(()=> {
     console.log("Database connected...");
-    app.listen(3000,()=>{
+    server.listen(3000,()=>{
         console.log("Server running at 3000");
     });
 }).catch(err => {
